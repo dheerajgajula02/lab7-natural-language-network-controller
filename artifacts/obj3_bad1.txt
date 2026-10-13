@@ -1,0 +1,6 @@
+{
+  "intent": "Make the network faster",
+  "reply": "I'd like to help, but \"make the network faster\" is too vague to draft an actionable policy. A few possibilities:\n\n- **Raise a bandwidth cap** \u2014 I can prepare a rate-limit draft with a higher Mbps value. Which hosts/direction, and what target rate?\n- **Prioritize certain traffic** \u2014 I can mark traffic as `high`/`normal`/`low` class. Which conversation (e.g., h1 \u2192 h2) should get priority?\n- **Reduce congestion** \u2014 I could draft a block for unwanted traffic. What should be blocked?\n\nWhich of these did you have in mind, and between which hosts (h1\u2013h4)?",
+  "calls": [],
+  "verdict": "REJECTED: Intent needs clarification or contains multiple policies."
+}

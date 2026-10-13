@@ -1,0 +1,405 @@
+[
+  {
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way"
+    },
+    "output": {
+      "status": "ready_for_review",
+      "policy": {
+        "schema_version": "1.0",
+        "source": "h1",
+        "destination": "h3",
+        "protocol": "any",
+        "direction": "one_way",
+        "source_port": null,
+        "destination_port": null,
+        "action": "block",
+        "parameters": {}
+      },
+      "summary": "Block all traffic from h1 to h3.",
+      "issues": [],
+      "validation": {
+        "schema_checked": true,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "tool": "prepare_allow_policy",
+    "input": {
+      "source": "h2",
+      "destination": "h4",
+      "protocol": "icmp",
+      "direction": "both",
+      "allow_only": true
+    },
+    "output": {
+      "status": "ready_for_review",
+      "policy": {
+        "schema_version": "1.0",
+        "source": "h2",
+        "destination": "h4",
+        "protocol": "icmp",
+        "direction": "both",
+        "source_port": null,
+        "destination_port": null,
+        "action": "allow",
+        "parameters": {
+          "allow_only": true
+        }
+      },
+      "summary": "Allow ICMP traffic between h2 and h4 in both directions. Block other IPv4 traffic within that endpoint and direction scope.",
+      "issues": [],
+      "validation": {
+        "schema_checked": true,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "tool": "prepare_rate_limit_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h4",
+      "protocol": "udp",
+      "direction": "one_way",
+      "rate_mbps": 10.0
+    },
+    "output": {
+      "status": "ready_for_review",
+      "policy": {
+        "schema_version": "1.0",
+        "source": "h1",
+        "destination": "h4",
+        "protocol": "udp",
+        "direction": "one_way",
+        "source_port": null,
+        "destination_port": null,
+        "action": "rate_limit",
+        "parameters": {
+          "rate_mbps": 10.0
+        }
+      },
+      "summary": "Limit UDP traffic from h1 to h4 to 10 Mbps per direction.",
+      "issues": [],
+      "validation": {
+        "schema_checked": true,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "tool": "prepare_prioritize_policy",
+    "input": {
+      "source": "h2",
+      "destination": "h3",
+      "protocol": "udp",
+      "direction": "one_way",
+      "destination_port": 5004,
+      "traffic_class": "high"
+    },
+    "output": {
+      "status": "ready_for_review",
+      "policy": {
+        "schema_version": "1.0",
+        "source": "h2",
+        "destination": "h3",
+        "protocol": "udp",
+        "direction": "one_way",
+        "source_port": null,
+        "destination_port": 5004,
+        "action": "prioritize",
+        "parameters": {
+          "traffic_class": "high"
+        }
+      },
+      "summary": "Give UDP traffic with destination port 5004 from h2 to h3 the high traffic class.",
+      "issues": [],
+      "validation": {
+        "schema_checked": true,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "case": "unknown host",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h5",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way"
+    },
+    "is_error": false,
+    "output": {
+      "status": "rejected",
+      "policy": null,
+      "summary": "Policy draft rejected.",
+      "issues": [
+        "policy: Value error, Unknown source host h5; planned hosts are h1\u2013h4."
+      ],
+      "validation": {
+        "schema_checked": false,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "case": "ICMP with port",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "icmp",
+      "direction": "one_way",
+      "destination_port": 80
+    },
+    "is_error": false,
+    "output": {
+      "status": "rejected",
+      "policy": null,
+      "summary": "Policy draft rejected.",
+      "issues": [
+        "policy: Value error, Ports require protocol tcp or udp; any and icmp have no ports."
+      ],
+      "validation": {
+        "schema_checked": false,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "case": "bad port",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "tcp",
+      "direction": "one_way",
+      "destination_port": 70000
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_block_policy: 1 validation error for prepare_block_policyArguments\ndestination_port\n  Input should be less than or equal to 65535 [type=less_than_equal, input_value=70000, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.13/v/less_than_equal",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "string port",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "tcp",
+      "direction": "one_way",
+      "destination_port": "80"
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_block_policy: 1 validation error for prepare_block_policyArguments\ndestination_port\n  Input should be a valid integer [type=int_type, input_value='80', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/int_type",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "unknown protocol",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "sctp",
+      "direction": "one_way"
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_block_policy: 1 validation error for prepare_block_policyArguments\nprotocol\n  Input should be 'any', 'tcp', 'udp' or 'icmp' [type=literal_error, input_value='sctp', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "missing direction",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any"
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_block_policy: 1 validation error for prepare_block_policyArguments\ndirection\n  Field required [type=missing, input_value={'source': 'h1', 'destina...'h3', 'protocol': 'any'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "noncanonical subnet",
+    "tool": "prepare_block_policy",
+    "input": {
+      "source": "10.0.0.5/24",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way"
+    },
+    "is_error": false,
+    "output": {
+      "status": "rejected",
+      "policy": null,
+      "summary": "Policy draft rejected.",
+      "issues": [
+        "policy: Value error, source must be h1\u2013h4, any, or a canonical IPv4 subnet such as 10.0.0.0/24."
+      ],
+      "validation": {
+        "schema_checked": false,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  },
+  {
+    "case": "negative rate",
+    "tool": "prepare_rate_limit_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way",
+      "rate_mbps": -1.0
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_rate_limit_policy: 1 validation error for prepare_rate_limit_policyArguments\nrate_mbps\n  Input should be greater than 0 [type=greater_than, input_value=-1.0, input_type=float]\n    For further information visit https://errors.pydantic.dev/2.13/v/greater_than",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "string approval flag",
+    "tool": "prepare_allow_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way",
+      "allow_only": "true"
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_allow_policy: 1 validation error for prepare_allow_policyArguments\nallow_only\n  Input should be a valid boolean [type=bool_type, input_value='true', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/bool_type",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "unknown traffic class",
+    "tool": "prepare_prioritize_policy",
+    "input": {
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way",
+      "traffic_class": "urgent"
+    },
+    "is_error": true,
+    "output": [
+      {
+        "type": "text",
+        "text": "Error executing tool prepare_prioritize_policy: 1 validation error for prepare_prioritize_policyArguments\ntraffic_class\n  Input should be 'low', 'normal' or 'high' [type=literal_error, input_value='urgent', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  {
+    "case": "subnet and wildcard after rejections",
+    "input": {
+      "source": "10.0.0.0/24",
+      "destination": "any",
+      "protocol": "tcp",
+      "direction": "one_way",
+      "destination_port": 80
+    },
+    "output": {
+      "status": "ready_for_review",
+      "policy": {
+        "schema_version": "1.0",
+        "source": "10.0.0.0/24",
+        "destination": "any",
+        "protocol": "tcp",
+        "direction": "one_way",
+        "source_port": null,
+        "destination_port": 80,
+        "action": "block",
+        "parameters": {}
+      },
+      "summary": "Block TCP traffic with destination port 80 from 10.0.0.0/24 to any.",
+      "issues": [],
+      "validation": {
+        "schema_checked": true,
+        "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+        "live_topology_checked": false,
+        "installed_policy_conflicts_checked": false
+      },
+      "requires_confirmation": true,
+      "applied": false,
+      "application_available": false
+    }
+  }
+]

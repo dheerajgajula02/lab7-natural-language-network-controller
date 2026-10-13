@@ -1,0 +1,14 @@
+Translated policy:
+{
+  "schema_version": "1.0",
+  "source": "any",
+  "destination": "h4",
+  "protocol": "tcp",
+  "direction": "one_way",
+  "source_port": null,
+  "destination_port": 80,
+  "action": "block",
+  "parameters": {}
+}
+Apply this policy? (yes/no): Installed block on s1 (dpid 1): match {'dl_type': 2048, 'dl_dst': '00:00:00:00:00:04', 'nw_proto': 6, 'tcp_dst': 80} -> DROP
+Rule is active: s1 flow table now holds 17 entries.

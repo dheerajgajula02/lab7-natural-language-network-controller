@@ -1,0 +1,259 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "prepare_block_policy",
+      "description": "Prepare a drop-policy draft for matching IPv4 traffic; do not install it.\n\nPorts require TCP or UDP. Direction must be explicit. Both directions reverse\nendpoint and port matches. Unknown hosts are rejected against planned h1\u2013h4.\n",
+      "parameters": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "source_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "destination_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction"
+        ],
+        "title": "prepare_block_policyArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "prepare_allow_policy",
+      "description": "Prepare an allow-policy draft; do not install it.\n\nSet allow_only=true for 'allow only': other IPv4 traffic in the same endpoint\nand direction scope must be denied when later implemented. False adds an allow\nwithout requesting that complementary denial. Direction is explicit.\n",
+      "parameters": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "allow_only": {
+            "title": "Allow Only",
+            "type": "boolean"
+          },
+          "source_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "destination_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction",
+          "allow_only"
+        ],
+        "title": "prepare_allow_policyArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "prepare_rate_limit_policy",
+      "description": "Prepare a rate-limit draft with a positive finite Mbps cap per direction.\n\nThis represents intent only. Meter programming and application are not\nimplemented; no bandwidth change occurs. Ports require TCP or UDP.\n",
+      "parameters": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "rate_mbps": {
+            "exclusiveMinimum": 0,
+            "title": "Rate Mbps",
+            "type": "number"
+          },
+          "source_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "destination_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction",
+          "rate_mbps"
+        ],
+        "title": "prepare_rate_limit_policyArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "prepare_prioritize_policy",
+      "description": "Prepare a low/normal/high traffic-class draft; do not install it.\n\nTraffic class means desired QoS treatment, not OpenFlow flow-entry priority.\nQueue/DSCP mappings and execution are not implemented yet.\n",
+      "parameters": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "traffic_class": {
+            "enum": [
+              "low",
+              "normal",
+              "high"
+            ],
+            "title": "Traffic Class",
+            "type": "string"
+          },
+          "source_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "destination_port": {
+            "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction",
+          "traffic_class"
+        ],
+        "title": "prepare_prioritize_policyArguments",
+        "type": "object"
+      }
+    }
+  }
+]

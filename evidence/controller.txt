@@ -1,0 +1,21 @@
+97060324-da2c-4cc5-ac47-5e2006b159a7
+    Manager "ptcp:6632"
+    Bridge "s1"
+        Controller "ptcp:6654"
+        Controller "tcp:10.224.78.132:6633"
+            is_connected: true
+        fail_mode: secure
+        Port "s1-eth1"
+            Interface "s1-eth1"
+        Port "s1"
+            Interface "s1"
+                type: internal
+        Port "s1-eth4"
+            Interface "s1-eth4"
+        Port "s1-eth3"
+            Interface "s1-eth3"
+        Port "s1-eth2"
+            Interface "s1-eth2"
+    ovs_version: "2.0.2"
+["OpenFlow13"]
+[1]

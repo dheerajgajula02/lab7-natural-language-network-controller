@@ -1,0 +1,12 @@
+def translate_intent(intent_string):
+    """Call the LLM/MCP pipeline and return one validated policy dictionary."""
+    try:
+        result = asyncio.run(request_policy(intent_string))
+    except Exception as error:
+        raise ValueError("Invalid LLM response or MCP request.") from error
+    if len(result["calls"]) != 1:
+        raise ValueError("Intent needs clarification or contains multiple policies.")
+    call = result["calls"][0]
+    if call["is_error"] or call["output"].get("status") != "ready_for_review":
+        raise ValueError(f"Policy rejected: {call['output']}")
+    return call["output"]["policy"]

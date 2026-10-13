@@ -1,0 +1,41 @@
+{
+  "query": "Block all traffic from H1 to H3",
+  "reply": "",
+  "calls": [
+    {
+      "tool": "prepare_block_policy",
+      "input": {
+        "source": "h1",
+        "destination": "h3",
+        "protocol": "any",
+        "direction": "one_way"
+      },
+      "is_error": false,
+      "output": {
+        "status": "ready_for_review",
+        "policy": {
+          "schema_version": "1.0",
+          "source": "h1",
+          "destination": "h3",
+          "protocol": "any",
+          "direction": "one_way",
+          "source_port": null,
+          "destination_port": null,
+          "action": "block",
+          "parameters": {}
+        },
+        "summary": "Block all traffic from h1 to h3.",
+        "issues": [],
+        "validation": {
+          "schema_checked": true,
+          "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+          "live_topology_checked": false,
+          "installed_policy_conflicts_checked": false
+        },
+        "requires_confirmation": true,
+        "applied": false,
+        "application_available": false
+      }
+    }
+  ]
+}

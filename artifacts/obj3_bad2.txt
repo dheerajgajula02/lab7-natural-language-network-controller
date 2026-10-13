@@ -1,0 +1,6 @@
+{
+  "intent": "Block h5",
+  "reply": "I can't work with `h5` \u2014 only hosts **h1\u2013h4** are recognized in this environment. Could you clarify which of h1\u2013h4 you meant, and between which endpoints (and protocol/ports, if any) the block should apply?",
+  "calls": [],
+  "verdict": "REJECTED: Intent needs clarification or contains multiple policies."
+}

@@ -1,0 +1,19 @@
+Translated policy:
+{
+  "schema_version": "1.0",
+  "source": "h2",
+  "destination": "h4",
+  "protocol": "icmp",
+  "direction": "both",
+  "source_port": null,
+  "destination_port": null,
+  "action": "allow",
+  "parameters": {
+    "allow_only": true
+  }
+}
+Apply this policy? (yes/no): Installed allow on s1 (dpid 1): match {'dl_type': 2048, 'dl_src': '00:00:00:00:00:02', 'dl_dst': '00:00:00:00:00:04', 'nw_proto': 1} -> OUTPUT:4
+Installed allow on s1 (dpid 1): match {'dl_type': 2048, 'dl_src': '00:00:00:00:00:02', 'dl_dst': '00:00:00:00:00:04'} -> DROP
+Installed allow on s1 (dpid 1): match {'dl_type': 2048, 'dl_src': '00:00:00:00:00:04', 'dl_dst': '00:00:00:00:00:02', 'nw_proto': 1} -> OUTPUT:2
+Installed allow on s1 (dpid 1): match {'dl_type': 2048, 'dl_src': '00:00:00:00:00:04', 'dl_dst': '00:00:00:00:00:02'} -> DROP
+Rule is active: s1 flow table now holds 21 entries.

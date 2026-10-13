@@ -1,0 +1,363 @@
+{
+  "model": "mimo-v2.6-flash",
+  "cases": [
+    {
+      "case": 1,
+      "query": "Stop all IPv4 traffic that h1 sends to h3. This is one-way; leave the reverse direction alone.",
+      "expected_tool": "prepare_block_policy",
+      "expected_arguments": {
+        "source": "h1",
+        "destination": "h3",
+        "protocol": "any",
+        "direction": "one_way"
+      },
+      "calls": [
+        {
+          "tool": "prepare_block_policy",
+          "arguments": {
+            "source": "h1",
+            "destination": "h3",
+            "protocol": "any",
+            "direction": "one_way"
+          },
+          "output": {
+            "status": "ready_for_review",
+            "policy": {
+              "schema_version": "1.0",
+              "source": "h1",
+              "destination": "h3",
+              "protocol": "any",
+              "direction": "one_way",
+              "source_port": null,
+              "destination_port": null,
+              "action": "block",
+              "parameters": {}
+            },
+            "summary": "Block all traffic from h1 to h3.",
+            "issues": [],
+            "validation": {
+              "schema_checked": true,
+              "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+              "live_topology_checked": false,
+              "installed_policy_conflicts_checked": false
+            },
+            "requires_confirmation": true,
+            "applied": false,
+            "application_available": false
+          }
+        }
+      ],
+      "passed": true,
+      "usage": [
+        {
+          "completion_tokens": 71,
+          "prompt_tokens": 1654,
+          "total_tokens": 1725,
+          "completion_tokens_details": {
+            "reasoning_tokens": 23
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        {
+          "completion_tokens": 126,
+          "prompt_tokens": 1880,
+          "total_tokens": 2006,
+          "completion_tokens_details": {
+            "reasoning_tokens": 5
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        }
+      ],
+      "final_response": "The draft is ready for review:\n\n- **Action:** Block all traffic from **h1 \u2192 h3** (one-way; the reverse direction h3 \u2192 h1 is untouched)\n- **Protocol/ports:** Any protocol, no port restriction\n- **Validation:** Endpoints checked against the planned h1\u2013h4 inventory; **no live topology or installed-policy conflict checks were performed**\n- **Status:** Not applied \u2014 this is a draft only and requires your confirmation\n\nLet me know if you'd like to narrow it (e.g., a specific protocol or port) before confirming."
+    },
+    {
+      "case": 2,
+      "query": "Let h2 and h4 ping each other in both directions, but allow no other IPv4 traffic between them.",
+      "expected_tool": "prepare_allow_policy",
+      "expected_arguments": {
+        "source": "h2",
+        "destination": "h4",
+        "protocol": "icmp",
+        "direction": "both",
+        "allow_only": true
+      },
+      "calls": [
+        {
+          "tool": "prepare_allow_policy",
+          "arguments": {
+            "source": "h2",
+            "destination": "h4",
+            "protocol": "icmp",
+            "direction": "both",
+            "allow_only": true
+          },
+          "output": {
+            "status": "ready_for_review",
+            "policy": {
+              "schema_version": "1.0",
+              "source": "h2",
+              "destination": "h4",
+              "protocol": "icmp",
+              "direction": "both",
+              "source_port": null,
+              "destination_port": null,
+              "action": "allow",
+              "parameters": {
+                "allow_only": true
+              }
+            },
+            "summary": "Allow ICMP traffic between h2 and h4 in both directions. Block other IPv4 traffic within that endpoint and direction scope.",
+            "issues": [],
+            "validation": {
+              "schema_checked": true,
+              "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+              "live_topology_checked": false,
+              "installed_policy_conflicts_checked": false
+            },
+            "requires_confirmation": true,
+            "applied": false,
+            "application_available": false
+          }
+        }
+      ],
+      "passed": true,
+      "usage": [
+        {
+          "completion_tokens": 181,
+          "prompt_tokens": 1653,
+          "total_tokens": 1834,
+          "completion_tokens_details": {
+            "reasoning_tokens": 126
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        },
+        {
+          "completion_tokens": 139,
+          "prompt_tokens": 2007,
+          "total_tokens": 2146,
+          "completion_tokens_details": {
+            "reasoning_tokens": 6
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        }
+      ],
+      "final_response": "The draft is ready for review:\n\n- **Allow** ICMP (ping) between **h2 \u2194 h4** in **both directions**.\n- With `allow_only` set, any **other IPv4 traffic between h2 and h4 must be denied** \u2014 satisfying \"no other IPv4 traffic between them.\"\n\n**Status:** This is only a draft (`applied: false`). Endpoints were validated against the planned h1\u2013h4 inventory, but no live topology check or installed-policy conflict check has been performed, and the rule is not installed. It also requires confirmation before any future application.\n\nShall I keep this draft as-is?"
+    },
+    {
+      "case": 3,
+      "query": "Cap UDP traffic from h1 to h4 at ten megabits per second, one-way.",
+      "expected_tool": "prepare_rate_limit_policy",
+      "expected_arguments": {
+        "source": "h1",
+        "destination": "h4",
+        "protocol": "udp",
+        "direction": "one_way",
+        "rate_mbps": 10
+      },
+      "calls": [
+        {
+          "tool": "prepare_rate_limit_policy",
+          "arguments": {
+            "source": "h1",
+            "destination": "h4",
+            "protocol": "udp",
+            "direction": "one_way",
+            "rate_mbps": 10
+          },
+          "output": {
+            "status": "ready_for_review",
+            "policy": {
+              "schema_version": "1.0",
+              "source": "h1",
+              "destination": "h4",
+              "protocol": "udp",
+              "direction": "one_way",
+              "source_port": null,
+              "destination_port": null,
+              "action": "rate_limit",
+              "parameters": {
+                "rate_mbps": 10.0
+              }
+            },
+            "summary": "Limit UDP traffic from h1 to h4 to 10 Mbps per direction.",
+            "issues": [],
+            "validation": {
+              "schema_checked": true,
+              "endpoint_check": "planned_h1_h4_inventory_and_ipv4_syntax",
+              "live_topology_checked": false,
+              "installed_policy_conflicts_checked": false
+            },
+            "requires_confirmation": true,
+            "applied": false,
+            "application_available": false
+          }
+        }
+      ],
+      "passed": true,
+      "usage": [
+        {
+          "completion_tokens": 139,
+          "prompt_tokens": 1650,
+          "total_tokens": 1789,
+          "completion_tokens_details": {
+            "reasoning_tokens": 79
+          },
+          "prompt_tokens_details": null
+        },
+        {
+          "completion_tokens": 166,
+          "prompt_tokens": 1961,
+          "total_tokens": 2127,
+          "completion_tokens_details": {
+            "reasoning_tokens": 16
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        }
+      ],
+      "final_response": "The draft rate limit is ready for review:\n\n- **Source \u2192 Destination:** h1 \u2192 h4 (one-way, so return traffic is not affected)\n- **Protocol:** UDP (all ports, since none were specified)\n- **Cap:** 10 Mbps in the h1\u2192h4 direction\n\nLimitations to be aware of:\n- This is a **draft only** \u2014 no meter has been programmed and **no bandwidth change has occurred**.\n- Validation was done against the planned h1\u2013h4 inventory and IPv4 syntax only; **live topology and installed-policy conflict checks have not been performed**.\n\nWould you like to narrow this to a specific UDP port, extend it to both directions, or proceed toward implementation?"
+    },
+    {
+      "case": 4,
+      "query": "Give high priority to UDP video traffic sent from h2 to h3, destined for port 5004. One-way only.",
+      "expected_tool": "prepare_prioritize_policy",
+      "expected_arguments": {
+        "source": "h2",
+        "destination": "h3",
+        "protocol": "udp",
+        "direction": "one_way",
+        "destination_port": 5004,
+        "traffic_class": "high"
+      },
+      "calls": [
+        {
+          "tool": "prepare_prioritize_policy",
+          "arguments": {
+            "source": "h2",
+            "destination": "h3",
+            "protocol": "udp",
+            "direction": "one_way",
+            "destination_port": "5004",
+            "traffic_class": "high"
+          },
+          "output": {
+            "status": "rejected",
+            "applied": false,
+            "issues": [
+              "destination_port: '5004' is not valid under any of the given schemas"
+            ]
+          },
+          "mcp_executed": false
+        },
+        {
+          "tool": "prepare_prioritize_policy",
+          "arguments": {
+            "destination": "h3",
+            "destination_port": "5004",
+            "direction": "one_way",
+            "protocol": "udp",
+            "source": "h2",
+            "traffic_class": "high"
+          },
+          "output": {
+            "status": "rejected",
+            "applied": false,
+            "issues": [
+              "destination_port: '5004' is not valid under any of the given schemas"
+            ]
+          },
+          "mcp_executed": false
+        },
+        {
+          "tool": "prepare_prioritize_policy",
+          "arguments": {
+            "destination": "h3",
+            "destination_port": "5004",
+            "direction": "one_way",
+            "protocol": "udp",
+            "source": "h2",
+            "traffic_class": "high"
+          },
+          "output": {
+            "status": "rejected",
+            "applied": false,
+            "issues": [
+              "destination_port: '5004' is not valid under any of the given schemas"
+            ]
+          },
+          "mcp_executed": false
+        }
+      ],
+      "passed": false,
+      "completed": true,
+      "usage": [
+        {
+          "completion_tokens": 103,
+          "prompt_tokens": 1658,
+          "total_tokens": 1761,
+          "completion_tokens_details": {
+            "reasoning_tokens": 33
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        },
+        {
+          "completion_tokens": 116,
+          "prompt_tokens": 1803,
+          "total_tokens": 1919,
+          "completion_tokens_details": {
+            "reasoning_tokens": 46
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        },
+        {
+          "completion_tokens": 192,
+          "prompt_tokens": 1961,
+          "total_tokens": 2153,
+          "completion_tokens_details": {
+            "reasoning_tokens": 122
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1792
+          }
+        }
+      ],
+      "error": "RuntimeError: request or tool validation failed; inspect local execution."
+    },
+    {
+      "case": 5,
+      "query": "Make the network faster.",
+      "expected_tool": null,
+      "expected_arguments": {},
+      "calls": [],
+      "passed": true,
+      "completed": true,
+      "usage": [
+        {
+          "completion_tokens": 311,
+          "prompt_tokens": 1635,
+          "total_tokens": 1946,
+          "completion_tokens_details": {
+            "reasoning_tokens": 94
+          },
+          "prompt_tokens_details": {
+            "cached_tokens": 1600
+          }
+        }
+      ],
+      "final_response": "\"Make the network faster\" is too vague for me to draft a specific policy \u2014 it could mean several different things. To prepare something useful, I need a bit more detail:\n\n1. **Which traffic?** For example: a source host (h1\u2013h4), a destination host or subnet, or a particular service/port.\n2. **What kind of treatment do you want?**\n   - **Priority boost** \u2014 mark certain traffic as higher/normal/lower traffic class (QoS preference).\n   - **Bandwidth cap** \u2014 limit a flow's rate to a certain Mbps (usually to *reduce* congestion rather than speed things up).\n   - **Allow-only** \u2014 permit a specific flow exclusively (with everything else in scope denied).\n3. **Direction** \u2014 one-way or both directions?\n4. **Protocol** \u2014 TCP, UDP, ICMP (ping), or any?\n\nOnce you tell me *what traffic* you want improved and *how*, I'll prepare a draft policy for it (as a draft only \u2014 nothing gets installed)."
+    }
+  ]
+}

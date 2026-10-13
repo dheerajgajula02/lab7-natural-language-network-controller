@@ -1,0 +1,14 @@
+Translated policy:
+{
+  "schema_version": "1.0",
+  "source": "h3",
+  "destination": "h4",
+  "protocol": "udp",
+  "direction": "one_way",
+  "source_port": null,
+  "destination_port": null,
+  "action": "block",
+  "parameters": {}
+}
+OK: policy is valid and conflicts with nothing installed.
+Apply this policy? (yes/no): Policy discarded; nothing was installed.

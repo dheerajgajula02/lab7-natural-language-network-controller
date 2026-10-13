@@ -1,0 +1,2419 @@
+{
+  "meta": null,
+  "nextCursor": null,
+  "tools": [
+    {
+      "name": "prepare_block_policy",
+      "title": null,
+      "description": "Prepare a drop-policy draft for matching IPv4 traffic; do not install it.\n\nPorts require TCP or UDP. Direction must be explicit. Both directions reverse\nendpoint and port matches. Unknown hosts are rejected against planned h1\u2013h4.\n",
+      "inputSchema": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "source_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Port"
+          },
+          "destination_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Destination Port"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction"
+        ],
+        "title": "prepare_block_policyArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "$defs": {
+          "AllowParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "allow_only": {
+                "title": "Allow Only",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "allow_only"
+            ],
+            "title": "AllowParameters",
+            "type": "object"
+          },
+          "AllowPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "allow",
+                "default": "allow",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/AllowParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "AllowPolicy",
+            "type": "object"
+          },
+          "BlockPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "block",
+                "default": "block",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/EmptyParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction"
+            ],
+            "title": "BlockPolicy",
+            "type": "object"
+          },
+          "EmptyParameters": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "EmptyParameters",
+            "type": "object"
+          },
+          "PrioritizePolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "prioritize",
+                "default": "prioritize",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/PriorityParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "PrioritizePolicy",
+            "type": "object"
+          },
+          "PriorityParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "traffic_class": {
+                "enum": [
+                  "low",
+                  "normal",
+                  "high"
+                ],
+                "title": "Traffic Class",
+                "type": "string"
+              }
+            },
+            "required": [
+              "traffic_class"
+            ],
+            "title": "PriorityParameters",
+            "type": "object"
+          },
+          "RateLimitPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "rate_limit",
+                "default": "rate_limit",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/RateParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "RateLimitPolicy",
+            "type": "object"
+          },
+          "RateParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "rate_mbps": {
+                "exclusiveMinimum": 0,
+                "title": "Rate Mbps",
+                "type": "number"
+              }
+            },
+            "required": [
+              "rate_mbps"
+            ],
+            "title": "RateParameters",
+            "type": "object"
+          },
+          "ValidationScope": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_checked": {
+                "title": "Schema Checked",
+                "type": "boolean"
+              },
+              "endpoint_check": {
+                "const": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "default": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "title": "Endpoint Check",
+                "type": "string"
+              },
+              "live_topology_checked": {
+                "const": false,
+                "default": false,
+                "title": "Live Topology Checked",
+                "type": "boolean"
+              },
+              "installed_policy_conflicts_checked": {
+                "const": false,
+                "default": false,
+                "title": "Installed Policy Conflicts Checked",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "schema_checked"
+            ],
+            "title": "ValidationScope",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ready_for_review",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "discriminator": {
+                  "mapping": {
+                    "allow": "#/$defs/AllowPolicy",
+                    "block": "#/$defs/BlockPolicy",
+                    "prioritize": "#/$defs/PrioritizePolicy",
+                    "rate_limit": "#/$defs/RateLimitPolicy"
+                  },
+                  "propertyName": "action"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/BlockPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/AllowPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/RateLimitPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/PrioritizePolicy"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "validation": {
+            "$ref": "#/$defs/ValidationScope"
+          },
+          "requires_confirmation": {
+            "const": true,
+            "default": true,
+            "title": "Requires Confirmation",
+            "type": "boolean"
+          },
+          "applied": {
+            "const": false,
+            "default": false,
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "application_available": {
+            "const": false,
+            "default": false,
+            "title": "Application Available",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "policy",
+          "summary",
+          "validation"
+        ],
+        "title": "PolicyDraft",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": null
+      },
+      "meta": null,
+      "execution": null
+    },
+    {
+      "name": "prepare_allow_policy",
+      "title": null,
+      "description": "Prepare an allow-policy draft; do not install it.\n\nSet allow_only=true for 'allow only': other IPv4 traffic in the same endpoint\nand direction scope must be denied when later implemented. False adds an allow\nwithout requesting that complementary denial. Direction is explicit.\n",
+      "inputSchema": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "allow_only": {
+            "title": "Allow Only",
+            "type": "boolean"
+          },
+          "source_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Port"
+          },
+          "destination_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Destination Port"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction",
+          "allow_only"
+        ],
+        "title": "prepare_allow_policyArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "$defs": {
+          "AllowParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "allow_only": {
+                "title": "Allow Only",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "allow_only"
+            ],
+            "title": "AllowParameters",
+            "type": "object"
+          },
+          "AllowPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "allow",
+                "default": "allow",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/AllowParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "AllowPolicy",
+            "type": "object"
+          },
+          "BlockPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "block",
+                "default": "block",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/EmptyParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction"
+            ],
+            "title": "BlockPolicy",
+            "type": "object"
+          },
+          "EmptyParameters": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "EmptyParameters",
+            "type": "object"
+          },
+          "PrioritizePolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "prioritize",
+                "default": "prioritize",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/PriorityParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "PrioritizePolicy",
+            "type": "object"
+          },
+          "PriorityParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "traffic_class": {
+                "enum": [
+                  "low",
+                  "normal",
+                  "high"
+                ],
+                "title": "Traffic Class",
+                "type": "string"
+              }
+            },
+            "required": [
+              "traffic_class"
+            ],
+            "title": "PriorityParameters",
+            "type": "object"
+          },
+          "RateLimitPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "rate_limit",
+                "default": "rate_limit",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/RateParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "RateLimitPolicy",
+            "type": "object"
+          },
+          "RateParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "rate_mbps": {
+                "exclusiveMinimum": 0,
+                "title": "Rate Mbps",
+                "type": "number"
+              }
+            },
+            "required": [
+              "rate_mbps"
+            ],
+            "title": "RateParameters",
+            "type": "object"
+          },
+          "ValidationScope": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_checked": {
+                "title": "Schema Checked",
+                "type": "boolean"
+              },
+              "endpoint_check": {
+                "const": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "default": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "title": "Endpoint Check",
+                "type": "string"
+              },
+              "live_topology_checked": {
+                "const": false,
+                "default": false,
+                "title": "Live Topology Checked",
+                "type": "boolean"
+              },
+              "installed_policy_conflicts_checked": {
+                "const": false,
+                "default": false,
+                "title": "Installed Policy Conflicts Checked",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "schema_checked"
+            ],
+            "title": "ValidationScope",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ready_for_review",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "discriminator": {
+                  "mapping": {
+                    "allow": "#/$defs/AllowPolicy",
+                    "block": "#/$defs/BlockPolicy",
+                    "prioritize": "#/$defs/PrioritizePolicy",
+                    "rate_limit": "#/$defs/RateLimitPolicy"
+                  },
+                  "propertyName": "action"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/BlockPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/AllowPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/RateLimitPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/PrioritizePolicy"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "validation": {
+            "$ref": "#/$defs/ValidationScope"
+          },
+          "requires_confirmation": {
+            "const": true,
+            "default": true,
+            "title": "Requires Confirmation",
+            "type": "boolean"
+          },
+          "applied": {
+            "const": false,
+            "default": false,
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "application_available": {
+            "const": false,
+            "default": false,
+            "title": "Application Available",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "policy",
+          "summary",
+          "validation"
+        ],
+        "title": "PolicyDraft",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": null
+      },
+      "meta": null,
+      "execution": null
+    },
+    {
+      "name": "prepare_rate_limit_policy",
+      "title": null,
+      "description": "Prepare a rate-limit draft with a positive finite Mbps cap per direction.\n\nThis represents intent only. Meter programming and application are not\nimplemented; no bandwidth change occurs. Ports require TCP or UDP.\n",
+      "inputSchema": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "rate_mbps": {
+            "exclusiveMinimum": 0,
+            "title": "Rate Mbps",
+            "type": "number"
+          },
+          "source_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Port"
+          },
+          "destination_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Destination Port"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction",
+          "rate_mbps"
+        ],
+        "title": "prepare_rate_limit_policyArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "$defs": {
+          "AllowParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "allow_only": {
+                "title": "Allow Only",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "allow_only"
+            ],
+            "title": "AllowParameters",
+            "type": "object"
+          },
+          "AllowPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "allow",
+                "default": "allow",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/AllowParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "AllowPolicy",
+            "type": "object"
+          },
+          "BlockPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "block",
+                "default": "block",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/EmptyParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction"
+            ],
+            "title": "BlockPolicy",
+            "type": "object"
+          },
+          "EmptyParameters": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "EmptyParameters",
+            "type": "object"
+          },
+          "PrioritizePolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "prioritize",
+                "default": "prioritize",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/PriorityParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "PrioritizePolicy",
+            "type": "object"
+          },
+          "PriorityParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "traffic_class": {
+                "enum": [
+                  "low",
+                  "normal",
+                  "high"
+                ],
+                "title": "Traffic Class",
+                "type": "string"
+              }
+            },
+            "required": [
+              "traffic_class"
+            ],
+            "title": "PriorityParameters",
+            "type": "object"
+          },
+          "RateLimitPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "rate_limit",
+                "default": "rate_limit",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/RateParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "RateLimitPolicy",
+            "type": "object"
+          },
+          "RateParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "rate_mbps": {
+                "exclusiveMinimum": 0,
+                "title": "Rate Mbps",
+                "type": "number"
+              }
+            },
+            "required": [
+              "rate_mbps"
+            ],
+            "title": "RateParameters",
+            "type": "object"
+          },
+          "ValidationScope": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_checked": {
+                "title": "Schema Checked",
+                "type": "boolean"
+              },
+              "endpoint_check": {
+                "const": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "default": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "title": "Endpoint Check",
+                "type": "string"
+              },
+              "live_topology_checked": {
+                "const": false,
+                "default": false,
+                "title": "Live Topology Checked",
+                "type": "boolean"
+              },
+              "installed_policy_conflicts_checked": {
+                "const": false,
+                "default": false,
+                "title": "Installed Policy Conflicts Checked",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "schema_checked"
+            ],
+            "title": "ValidationScope",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ready_for_review",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "discriminator": {
+                  "mapping": {
+                    "allow": "#/$defs/AllowPolicy",
+                    "block": "#/$defs/BlockPolicy",
+                    "prioritize": "#/$defs/PrioritizePolicy",
+                    "rate_limit": "#/$defs/RateLimitPolicy"
+                  },
+                  "propertyName": "action"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/BlockPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/AllowPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/RateLimitPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/PrioritizePolicy"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "validation": {
+            "$ref": "#/$defs/ValidationScope"
+          },
+          "requires_confirmation": {
+            "const": true,
+            "default": true,
+            "title": "Requires Confirmation",
+            "type": "boolean"
+          },
+          "applied": {
+            "const": false,
+            "default": false,
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "application_available": {
+            "const": false,
+            "default": false,
+            "title": "Application Available",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "policy",
+          "summary",
+          "validation"
+        ],
+        "title": "PolicyDraft",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": null
+      },
+      "meta": null,
+      "execution": null
+    },
+    {
+      "name": "prepare_prioritize_policy",
+      "title": null,
+      "description": "Prepare a low/normal/high traffic-class draft; do not install it.\n\nTraffic class means desired QoS treatment, not OpenFlow flow-entry priority.\nQueue/DSCP mappings and execution are not implemented yet.\n",
+      "inputSchema": {
+        "properties": {
+          "source": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Source",
+            "type": "string"
+          },
+          "destination": {
+            "description": "h1\u2013h4, explicit any, or canonical IPv4 CIDR subnet",
+            "title": "Destination",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "any",
+              "tcp",
+              "udp",
+              "icmp"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "one_way",
+              "both"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "traffic_class": {
+            "enum": [
+              "low",
+              "normal",
+              "high"
+            ],
+            "title": "Traffic Class",
+            "type": "string"
+          },
+          "source_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Port"
+          },
+          "destination_port": {
+            "anyOf": [
+              {
+                "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Destination Port"
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "protocol",
+          "direction",
+          "traffic_class"
+        ],
+        "title": "prepare_prioritize_policyArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "$defs": {
+          "AllowParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "allow_only": {
+                "title": "Allow Only",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "allow_only"
+            ],
+            "title": "AllowParameters",
+            "type": "object"
+          },
+          "AllowPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "allow",
+                "default": "allow",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/AllowParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "AllowPolicy",
+            "type": "object"
+          },
+          "BlockPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "block",
+                "default": "block",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/EmptyParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction"
+            ],
+            "title": "BlockPolicy",
+            "type": "object"
+          },
+          "EmptyParameters": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "EmptyParameters",
+            "type": "object"
+          },
+          "PrioritizePolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "prioritize",
+                "default": "prioritize",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/PriorityParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "PrioritizePolicy",
+            "type": "object"
+          },
+          "PriorityParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "traffic_class": {
+                "enum": [
+                  "low",
+                  "normal",
+                  "high"
+                ],
+                "title": "Traffic Class",
+                "type": "string"
+              }
+            },
+            "required": [
+              "traffic_class"
+            ],
+            "title": "PriorityParameters",
+            "type": "object"
+          },
+          "RateLimitPolicy": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": "1.0",
+                "default": "1.0",
+                "title": "Schema Version",
+                "type": "string"
+              },
+              "source": {
+                "title": "Source",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "protocol": {
+                "enum": [
+                  "any",
+                  "tcp",
+                  "udp",
+                  "icmp"
+                ],
+                "title": "Protocol",
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "one_way",
+                  "both"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "source_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Source Port"
+              },
+              "destination_port": {
+                "anyOf": [
+                  {
+                    "description": "JSON integer from 1 to 65535, e.g. 5004, never a quoted string such as '5004'.",
+                    "maximum": 65535,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Destination Port"
+              },
+              "action": {
+                "const": "rate_limit",
+                "default": "rate_limit",
+                "title": "Action",
+                "type": "string"
+              },
+              "parameters": {
+                "$ref": "#/$defs/RateParameters"
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "protocol",
+              "direction",
+              "parameters"
+            ],
+            "title": "RateLimitPolicy",
+            "type": "object"
+          },
+          "RateParameters": {
+            "additionalProperties": false,
+            "properties": {
+              "rate_mbps": {
+                "exclusiveMinimum": 0,
+                "title": "Rate Mbps",
+                "type": "number"
+              }
+            },
+            "required": [
+              "rate_mbps"
+            ],
+            "title": "RateParameters",
+            "type": "object"
+          },
+          "ValidationScope": {
+            "additionalProperties": false,
+            "properties": {
+              "schema_checked": {
+                "title": "Schema Checked",
+                "type": "boolean"
+              },
+              "endpoint_check": {
+                "const": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "default": "planned_h1_h4_inventory_and_ipv4_syntax",
+                "title": "Endpoint Check",
+                "type": "string"
+              },
+              "live_topology_checked": {
+                "const": false,
+                "default": false,
+                "title": "Live Topology Checked",
+                "type": "boolean"
+              },
+              "installed_policy_conflicts_checked": {
+                "const": false,
+                "default": false,
+                "title": "Installed Policy Conflicts Checked",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "schema_checked"
+            ],
+            "title": "ValidationScope",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ready_for_review",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "discriminator": {
+                  "mapping": {
+                    "allow": "#/$defs/AllowPolicy",
+                    "block": "#/$defs/BlockPolicy",
+                    "prioritize": "#/$defs/PrioritizePolicy",
+                    "rate_limit": "#/$defs/RateLimitPolicy"
+                  },
+                  "propertyName": "action"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/BlockPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/AllowPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/RateLimitPolicy"
+                  },
+                  {
+                    "$ref": "#/$defs/PrioritizePolicy"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "validation": {
+            "$ref": "#/$defs/ValidationScope"
+          },
+          "requires_confirmation": {
+            "const": true,
+            "default": true,
+            "title": "Requires Confirmation",
+            "type": "boolean"
+          },
+          "applied": {
+            "const": false,
+            "default": false,
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "application_available": {
+            "const": false,
+            "default": false,
+            "title": "Application Available",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "policy",
+          "summary",
+          "validation"
+        ],
+        "title": "PolicyDraft",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": null
+      },
+      "meta": null,
+      "execution": null
+    }
+  ]
+}

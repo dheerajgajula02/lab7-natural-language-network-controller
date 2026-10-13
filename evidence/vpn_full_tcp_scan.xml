@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.92 scan initiated Mon Oct 12 08:37:49 2026 as: nmap -sT -Pn -n -p- -&#45;max-retries 0 -&#45;max-rate 5000 -&#45;max-parallelism 64 -&#45;host-timeout 360s -&#45;open -iL lab7/evidence/vpn_scan_targets.txt -oA lab7/evidence/vpn_full_tcp_scan -->
+<nmaprun scanner="nmap" args="nmap -sT -Pn -n -p- -&#45;max-retries 0 -&#45;max-rate 5000 -&#45;max-parallelism 64 -&#45;host-timeout 360s -&#45;open -iL lab7/evidence/vpn_scan_targets.txt -oA lab7/evidence/vpn_full_tcp_scan" start="1791815869" startstr="Mon Oct 12 08:37:49 2026" version="7.92" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="65535" services="1-65535"/>

@@ -1,0 +1,6 @@
+{
+  "intent": "Stop h1 from doing bad things",
+  "reply": "I can prepare a block draft to stop h1 from doing something, but I need a bit more detail first:\n\n1. **What should h1 be stopped from doing?** For example: sending any traffic at all, pinging (ICMP), reaching a specific port/service, or talking to a particular host?\n2. **Scope:** Should this apply in one direction only (e.g., h1 \u2192 another host) or between h1 and the target in both directions?\n3. **Target:** Which host(s) or subnet (h2, h3, h4, a CIDR, or any)?\n\nFor example: \"Block h1 from sending ping (ICMP) to h2 in both directions\" or \"Stop all traffic from h1 to h3\" \u2014 tell me which and I'll prepare the draft.",
+  "calls": [],
+  "verdict": "REJECTED: Intent needs clarification or contains multiple policies."
+}

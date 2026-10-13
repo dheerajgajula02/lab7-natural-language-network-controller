@@ -1,0 +1,56 @@
+[
+  {
+    "host": "instance-20260827-204955",
+    "url": "http://100.118.37.46:80/",
+    "status": 200,
+    "title": ""
+  },
+  {
+    "host": "instance-20260827-204955",
+    "url": "https://100.118.37.46:443/",
+    "status": 200,
+    "title": ""
+  },
+  {
+    "host": "boulderserver",
+    "url": "http://100.96.78.56:8080/guacamole/",
+    "status": 403,
+    "title": ""
+  },
+  {
+    "host": "boulderserver",
+    "url": "http://100.96.78.56:8000/guacamole/",
+    "status": 404,
+    "title": "Page Not Found | NetBox"
+  },
+  {
+    "host": "boulderserver",
+    "url": "http://100.96.78.56:8088/guacamole/",
+    "status": 200,
+    "title": ""
+  },
+  {
+    "host": "csci5840-vm1-dhga8311",
+    "url": "http://100.87.236.123:8080/guacamole/",
+    "status": 403,
+    "title": ""
+  },
+  {
+    "host": "debian",
+    "url": "http://100.123.249.13:8080/guacamole/",
+    "status": 200,
+    "title": ""
+  },
+  {
+    "host": "indiaHomeserver",
+    "url": "http://100.96.139.17:8080/guacamole/",
+    "status": 404,
+    "title": ""
+  },
+  {
+    "host": "csci5840-vm2-dhga8311",
+    "url": "http://100.117.194.60:8080/guacamole/",
+    "status": 403,
+    "title": ""
+  }
+]

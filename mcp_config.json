@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "sdn-lab7-policy-builder": {
+      "command": "python3",
+      "args": ["/home/dheeraj/Desktop/softwareDefinedNetworks/lab7/mcp_server.py"]
+    }
+  }
+}

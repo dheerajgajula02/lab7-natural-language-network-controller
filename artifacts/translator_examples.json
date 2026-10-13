@@ -1,0 +1,48 @@
+[
+  {
+    "intent": "Block all traffic from h1 to h3",
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way",
+      "source_port": null,
+      "destination_port": null,
+      "action": "block",
+      "parameters": {}
+    }
+  },
+  {
+    "intent": "Allow only ICMP traffic between h2 and h4",
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h2",
+      "destination": "h4",
+      "protocol": "icmp",
+      "direction": "both",
+      "source_port": null,
+      "destination_port": null,
+      "action": "allow",
+      "parameters": {
+        "allow_only": true
+      }
+    }
+  },
+  {
+    "intent": "Rate-limit UDP traffic from h1 to h4 to 10 Mbps",
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h1",
+      "destination": "h4",
+      "protocol": "udp",
+      "direction": "one_way",
+      "source_port": null,
+      "destination_port": null,
+      "action": "rate_limit",
+      "parameters": {
+        "rate_mbps": 10.0
+      }
+    }
+  }
+]

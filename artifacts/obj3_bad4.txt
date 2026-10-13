@@ -1,0 +1,6 @@
+{
+  "intent": "Allow h1 to h2 but block h1 to h2",
+  "reply": "Your request contains a contradiction: the same traffic (h1 \u2192 h2) can't both be allowed and blocked. Could you clarify what you intend?\n\nA few possibilities:\n\n1. **Allow h1 \u2192 h2, but block the reverse (h2 \u2192 h1)** \u2014 one draft with direction `both` won't work here; you'd want an allow for h1 \u2192 h2 and a block for h2 \u2192 h1.\n2. **\"Allow h1 to h2 only\"** \u2014 an `allow_only=true` draft for h1 \u2192 h2, which implies all other traffic in that scope is denied.\n3. **Allow h1 \u2192 h2 and block everything else** \u2014 let me know the scope of \"everything else.\"\n\nWhich of these matches your intent?",
+  "calls": [],
+  "verdict": "REJECTED: Intent needs clarification or contains multiple policies."
+}

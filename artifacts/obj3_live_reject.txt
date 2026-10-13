@@ -1,0 +1,16 @@
+Translated policy:
+{
+  "schema_version": "1.0",
+  "source": "h1",
+  "destination": "h3",
+  "protocol": "any",
+  "direction": "one_way",
+  "source_port": null,
+  "destination_port": null,
+  "action": "allow",
+  "parameters": {
+    "allow_only": false
+  }
+}
+Rejected: conflicts with installed block policy (h1->h3 any); remove it before applying the opposite action.
+Policy discarded; nothing was installed.

@@ -1,0 +1,172 @@
+[
+  {
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way",
+      "source_port": null,
+      "destination_port": null,
+      "action": "block",
+      "parameters": {}
+    },
+    "flows": [
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:01",
+          "dl_dst": "00:00:00:00:00:03"
+        },
+        "actions": []
+      }
+    ]
+  },
+  {
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h2",
+      "destination": "h4",
+      "protocol": "icmp",
+      "direction": "both",
+      "source_port": null,
+      "destination_port": null,
+      "action": "allow",
+      "parameters": {
+        "allow_only": true
+      }
+    },
+    "flows": [
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:02",
+          "dl_dst": "00:00:00:00:00:04",
+          "nw_proto": 1
+        },
+        "actions": [
+          {
+            "type": "OUTPUT",
+            "port": 4
+          }
+        ]
+      },
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:02",
+          "dl_dst": "00:00:00:00:00:04"
+        },
+        "actions": []
+      },
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:04",
+          "dl_dst": "00:00:00:00:00:02",
+          "nw_proto": 1
+        },
+        "actions": [
+          {
+            "type": "OUTPUT",
+            "port": 2
+          }
+        ]
+      },
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:04",
+          "dl_dst": "00:00:00:00:00:02"
+        },
+        "actions": []
+      }
+    ]
+  },
+  {
+    "policy": {
+      "schema_version": "1.0",
+      "source": "any",
+      "destination": "h4",
+      "protocol": "tcp",
+      "direction": "one_way",
+      "source_port": null,
+      "destination_port": 80,
+      "action": "block",
+      "parameters": {}
+    },
+    "flows": [
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_dst": "00:00:00:00:00:04",
+          "nw_proto": 6,
+          "tcp_dst": 80
+        },
+        "actions": []
+      }
+    ]
+  },
+  {
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h1",
+      "destination": "h4",
+      "protocol": "udp",
+      "direction": "one_way",
+      "source_port": null,
+      "destination_port": null,
+      "action": "allow",
+      "parameters": {
+        "allow_only": true
+      }
+    },
+    "flows": [
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:01",
+          "dl_dst": "00:00:00:00:00:04",
+          "nw_proto": 17
+        },
+        "actions": [
+          {
+            "type": "OUTPUT",
+            "port": 4
+          }
+        ]
+      },
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:01",
+          "dl_dst": "00:00:00:00:00:04"
+        },
+        "actions": []
+      }
+    ]
+  },
+  {
+    "policy": {
+      "schema_version": "1.0",
+      "source": "h1",
+      "destination": "h3",
+      "protocol": "any",
+      "direction": "one_way",
+      "source_port": null,
+      "destination_port": null,
+      "action": "block",
+      "parameters": {}
+    },
+    "flows": [
+      {
+        "match": {
+          "dl_type": 2048,
+          "dl_src": "00:00:00:00:00:01",
+          "dl_dst": "00:00:00:00:00:03"
+        },
+        "actions": []
+      }
+    ]
+  }
+]
